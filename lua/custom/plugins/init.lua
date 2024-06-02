@@ -3,7 +3,5 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-  'Olical/conjure',
-  'guns/vim-sexp',
-  'tpope/vim-sexp-mappings-for-regular-people',
+  'habamax/vim-godot',
 }

@@ -576,8 +576,9 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
-        clojure_lsp = {},
-        jedi_language_server = {},
+        -- don't want to get all the python/clojure stuff set up on windows since WSL is better for that
+        -- clojure_lsp = {},
+        -- jedi_language_server = {},
 
         lua_ls = {
           -- cmd = {...},
@@ -845,7 +846,21 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'clojure', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'python', 'rust', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'clojure',
+        'diff',
+        'gdscript',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'python',
+        'rust',
+        'vim',
+        'vimdoc',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -853,9 +868,9 @@ require('lazy').setup({
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
+        additional_vim_regex_highlighting = { 'ruby', 'gdscript' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true, disable = { 'ruby', 'gdscript' } },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`

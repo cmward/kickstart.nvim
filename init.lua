@@ -555,6 +555,10 @@ require('lazy').setup({
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      vim.diagnostic.config {
+        underline = false,
+      }
+
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -624,6 +628,14 @@ require('lazy').setup({
           end,
         },
       }
+      local gdscript_config = {
+        capabilities = capabilities,
+        settings = {},
+      }
+      if vim.fn.has 'win32' == 1 then
+        gdscript_config['cmd'] = { 'ncat', 'localhost', os.getenv 'GDScript_Port' or '6005' }
+      end
+      require('lspconfig').gdscript.setup(gdscript_config)
     end,
   },
 

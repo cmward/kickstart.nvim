@@ -913,7 +913,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'custom.plugins',
@@ -948,3 +948,11 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+if vim.fn.filereadable(vim.fn.getcwd() .. '/project.godot') == 1 then
+  local addr = './godot.pipe'
+  if vim.fn.has 'win32' == 1 then
+    addr = '127.0.0.1:6004'
+  end
+  vim.fn.serverstart(addr)
+end

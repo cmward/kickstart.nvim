@@ -4,6 +4,8 @@
 -- See the kickstart.nvim README for more information
 return {
   'Olical/conjure',
-  'guns/vim-sexp',
-  'tpope/vim-sexp-mappings-for-regular-people',
+  --'guns/vim-sexp',
+  --'tpope/vim-sexp-mappings-for-regular-people',
+  'PaterJason/nvim-treesitter-sexp',
+  'gpanders/nvim-parinfer',
 }

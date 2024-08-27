@@ -3,5 +3,5 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-  'Olical/conjure',
+  { 'Olical/conjure', ft = "clojure" },
 }

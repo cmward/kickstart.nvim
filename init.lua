@@ -470,6 +470,7 @@ require('lazy').setup({
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lsp-signature-help'
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -624,8 +625,7 @@ require('lazy').setup({
         -- tsserver = {},
         rust_analyzer = {},
         clojure_lsp = {},
-        jedi_language_server = {},
-
+        pyright = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -657,6 +657,7 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'joker',
         'rustfmt',
+        'black',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -712,7 +713,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
+        python = { 'black' },
         clojure = { 'joker' },
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
@@ -774,7 +775,7 @@ require('lazy').setup({
         },
         completion = {
           completeopt = 'menu,menuone,noinsert',
-          autocomplete = false,
+          -- autocomplete = false,
         },
 
         formatting = {
@@ -793,7 +794,7 @@ require('lazy').setup({
             item.menu = menu_icon[entry.source.name]
 
             -- Set the fixed width of the completion menu.
-            local fixed_width = 30
+            local fixed_width = 40
 
             -- Set 'fixed_width' to false if not provided.
             fixed_width = fixed_width or false
@@ -887,6 +888,7 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'nvim_lsp_signature_help' }
         },
       }
     end,

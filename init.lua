@@ -470,7 +470,7 @@ require('lazy').setup({
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-nvim-lsp-signature-help'
+      'hrsh7th/cmp-nvim-lsp-signature-help',
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -658,6 +658,9 @@ require('lazy').setup({
         'joker',
         'rustfmt',
         'black',
+        'ruff',
+        'yamlfix',
+        'fixjson',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -713,8 +716,10 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'black' },
+        python = { 'ruff_format' },
         clojure = { 'joker' },
+        yaml = { 'yamlfix' },
+        json = { 'fixjson' },
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         -- javascript = { { "prettierd", "prettier" } },
@@ -888,7 +893,7 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
-          { name = 'nvim_lsp_signature_help' }
+          { name = 'nvim_lsp_signature_help' },
         },
       }
     end,
@@ -980,6 +985,7 @@ require('lazy').setup({
         'rust',
         'vim',
         'vimdoc',
+        'yaml',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,

@@ -555,7 +555,7 @@ require('lazy').setup({
           -- word under your cursor when your cursor rests there for a little while.
           --    See `:help CursorHold` for information about when this is executed
           --
-          -- When you move your cursor, the highlights will be cleared (the second autocommand).
+          -- When you move your cursor, the highlights will be cleared (the second autocommand)
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
@@ -676,6 +676,14 @@ require('lazy').setup({
           end,
         },
       }
+      local gdscript_config = {
+        capabilities = capabilities,
+        settings = {},
+      }
+      if vim.fn.has 'win32' == 1 then
+        gdscript_config['cmd'] = { 'ncat', 'localhost', os.getenv 'GDScript_Port' or '6005' }
+      end
+      require('lspconfig').gdscript.setup(gdscript_config)
     end,
   },
 
@@ -772,16 +780,19 @@ require('lazy').setup({
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
 
+      if vim.fn.has 'win32' == 1 then
+        completion = {}
+      else
+        completion = { completeopt = 'longest,menu,menuone,noinsert' }
+      end
+
       cmp.setup {
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
           end,
         },
-        completion = {
-          completeopt = 'menu,menuone,noinsert',
-          -- autocomplete = false,
-        },
+        completion = completion,
 
         formatting = {
           -- https://github.com/hrsh7th/nvim-cmp/discussions/609#discussioncomment-5727678
@@ -994,9 +1005,9 @@ require('lazy').setup({
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
+        additional_vim_regex_highlighting = { 'gdscript', 'ruby' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true, disable = { 'gdscript', 'ruby' } },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
@@ -1050,6 +1061,14 @@ require('lazy').setup({
     },
   },
 })
+
+if vim.fn.filereadable(vim.fn.getcwd() .. '/project.godot') == 1 then
+  local addr = './godot.pipe'
+  if vim.fn.has 'win32' == 1 then
+    addr = '127.0.0.1:6004'
+  end
+  vim.fn.serverstart(addr)
+end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

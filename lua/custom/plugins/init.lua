@@ -3,5 +3,7 @@
 --
 -- See the kickstart.nvim README for more information
 return {
+  'eraserhd/parinfer-rust',
+  'habamax/vim-godot',
   { 'Olical/conjure', ft = "clojure" },
 }

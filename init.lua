@@ -623,7 +623,7 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
-        rust_analyzer = {},
+        rust_analyzer = { diagnostics = { enable = true } },
         clojure_lsp = {},
         pyright = {},
         lua_ls = {

@@ -623,9 +623,11 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
-        rust_analyzer = { diagnostics = { enable = true } },
+        clangd = {},
         clojure_lsp = {},
+        jdtls = {},
         pyright = {},
+        rust_analyzer = { diagnostics = { enable = true } },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -654,13 +656,15 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
-        'joker',
-        'rustfmt',
         'black',
-        'ruff',
-        'yamlfix',
+        'clang-format',
         'fixjson',
+        'google-java-format',
+        'joker',
+        'ruff',
+        'rustfmt',
+        'stylua', -- Used to format Lua code
+        'yamlfix',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -724,10 +728,12 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
+        c = { 'clang-format' },
         python = { 'ruff_format' },
         clojure = { 'joker' },
         yaml = { 'yamlfix' },
         json = { 'fixjson' },
+        java = { 'google-java-format' },
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         -- javascript = { { "prettierd", "prettier" } },
@@ -989,6 +995,7 @@ require('lazy').setup({
         'clojure',
         'diff',
         'html',
+        'java',
         'lua',
         'luadoc',
         'markdown',

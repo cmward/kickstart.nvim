@@ -660,6 +660,7 @@ require('lazy').setup({
         'clang-format',
         'fixjson',
         'google-java-format',
+        'jdtls',
         'joker',
         'ruff',
         'rustfmt',
@@ -677,6 +678,15 @@ require('lazy').setup({
             -- certain features of an LSP (for example, turning off formatting for tsserver)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
+          end,
+          jdtls = function()
+            require('java').setup {
+              -- Your custom jdtls settings goes here
+            }
+
+            require('lspconfig').jdtls.setup {
+              -- Your custom nvim-java configuration goes here
+            }
           end,
         },
       }

@@ -6,4 +6,6 @@ return {
   'eraserhd/parinfer-rust',
   'habamax/vim-godot',
   { 'Olical/conjure', ft = "clojure" },
+  'nvim-java/nvim-java',
+  'mechatroner/rainbow_csv',
 }

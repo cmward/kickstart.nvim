@@ -156,9 +156,6 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
-vim.opt.tabstop = 4
-vim.o.shiftwidth = 4
-vim.o.softtabstop = 4
 vim.o.expandtab = true
 
 -- [[ Basic Keymaps ]]
@@ -805,6 +802,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         c = { 'clang-format' },
+        cpp = { 'clang-format' },
         python = { 'ruff_format' },
         clojure = { 'joker' },
         yaml = { 'yamlfix' },

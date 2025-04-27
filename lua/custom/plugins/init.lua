@@ -5,7 +5,8 @@
 return {
   'eraserhd/parinfer-rust',
   'habamax/vim-godot',
-  { 'Olical/conjure', ft = "clojure" },
+  { 'Olical/conjure', ft = 'clojure' },
   'nvim-java/nvim-java',
   'mechatroner/rainbow_csv',
+  { 'julianolf/nvim-dap-lldb', dependencies = { 'mfussenegger/nvim-dap' } },
 }

@@ -718,12 +718,9 @@ require('lazy').setup({
         'clang-format',
         'codelldb',
         'fixjson',
-        'google-java-format',
-        'jdtls',
         'joker',
         'rustfmt',
         'stylua', -- Used to format Lua code
-        'yamlfix',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -737,16 +734,7 @@ require('lazy').setup({
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-          jdtls = function()
-            require('java').setup {
-              -- Your custom jdtls settings goes here
-            }
-
-            require('lspconfig').jdtls.setup {
-              -- Your custom nvim-java configuration goes here
-            }
+            vim.lsp.config(server_name, server)
           end,
         },
       }
@@ -757,7 +745,8 @@ require('lazy').setup({
       if vim.fn.has 'win32' == 1 then
         gdscript_config['cmd'] = { 'ncat', 'localhost', os.getenv 'GDScript_Port' or '6005' }
       end
-      require('lspconfig').gdscript.setup(gdscript_config)
+      vim.lsp.config("gdscript", gdscript_config)
+      vim.lsp.enable({"gdscript"})
     end,
   },
 
@@ -807,9 +796,7 @@ require('lazy').setup({
         cpp = { 'clang-format' },
         python = { 'ruff_format' },
         clojure = { 'joker' },
-        yaml = { 'yamlfix' },
         json = { 'fixjson' },
-        java = { 'google-java-format' },
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         -- javascript = { { "prettierd", "prettier" } },
@@ -1000,7 +987,6 @@ require('lazy').setup({
         'clojure',
         'diff',
         'html',
-        'java',
         'lua',
         'luadoc',
         'markdown',

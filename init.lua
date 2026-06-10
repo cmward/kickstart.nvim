@@ -745,8 +745,8 @@ require('lazy').setup({
       if vim.fn.has 'win32' == 1 then
         gdscript_config['cmd'] = { 'ncat', 'localhost', os.getenv 'GDScript_Port' or '6005' }
       end
-      vim.lsp.config("gdscript", gdscript_config)
-      vim.lsp.enable({"gdscript"})
+      vim.lsp.config('gdscript', gdscript_config)
+      vim.lsp.enable { 'gdscript' }
     end,
   },
 
@@ -865,7 +865,7 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        preset = 'enter',
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -923,6 +923,7 @@ require('lazy').setup({
           operators = false,
           folds = false,
         },
+        bold = false,
         transparent_mode = false,
       }
       -- Load the colorscheme here.
@@ -984,6 +985,7 @@ require('lazy').setup({
       ensure_installed = {
         'bash',
         'c',
+        'cpp',
         'clojure',
         'diff',
         'html',

@@ -700,6 +700,11 @@ do
   ---@type table<string, vim.lsp.Config>
   local servers = {
     clangd = {},
+    gdscript = {
+      cmd = vim.fn.has 'win32' == 1
+        and { 'ncat', 'localhost', os.getenv 'GDScript_Port' or '6005' }
+        or { 'nc', 'localhost', os.getenv 'GDScript_Port' or '6005' },
+    },
     -- gopls = {},
     -- pyright = {},
     -- rust_analyzer = {},
@@ -765,6 +770,12 @@ do
   --
   -- You can press `g?` for help in this menu.
   local ensure_installed = vim.tbl_keys(servers or {})
+  for i, name in ipairs(ensure_installed) do
+    if name == 'gdscript' then
+      table.remove(ensure_installed, i)
+      break
+    end
+  end
   vim.list_extend(ensure_installed, {
     -- You can add other tools here that you want Mason to install
   })
@@ -912,8 +923,20 @@ do
   -- NOTE: You can also specify a branch or a specific commit
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
-  -- Ensure basic parsers are installed
-  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+  local parsers = {
+    'bash',
+    'c',
+    'cpp',
+    'diff',
+    'gdscript',
+    'html',
+    'lua',
+    'luadoc',
+    'markdown',
+    'markdown_inline',
+    'query',
+    'vim',
+    'vimdoc' }
   require('nvim-treesitter').install(parsers)
 
   ---@param buf integer
@@ -931,6 +954,11 @@ do
 
     -- Check if treesitter indentation is available for this language, and if so enable it
     -- in case there is no indent query, the indentexpr will fallback to the vim's built in one
+    if language == "gdscript" then
+      vim.bo[buf].syntax = 'on'
+      return
+    end
+
     local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
 
     -- Enable treesitter based indentation
@@ -978,14 +1006,14 @@ do
   -- require 'kickstart.plugins.debug'
   -- require 'kickstart.plugins.indent_line'
   -- require 'kickstart.plugins.lint'
-  -- require 'kickstart.plugins.autopairs'
+  require 'kickstart.plugins.autopairs'
   -- require 'kickstart.plugins.neo-tree'
   -- require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- require 'custom.plugins'
+  require 'custom.plugins'
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`

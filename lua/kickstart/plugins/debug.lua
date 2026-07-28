@@ -12,7 +12,7 @@ vim.pack.add {
   'https://github.com/nvim-neotest/nvim-nio',
   'https://github.com/mason-org/mason.nvim',
   'https://github.com/jay-babu/mason-nvim-dap.nvim',
-  'https://github.com/leoluz/nvim-dap-go',
+  'https://github.com/julianolf/nvim-dap-lldb'
 }
 
 -- Basic debugging keymaps, feel free to change to your liking!
@@ -42,6 +42,7 @@ require('mason-nvim-dap').setup {
   ensure_installed = {
     -- Update this to ensure that you have the debuggers for the langs you want
     'delve',
+    'codelldb'
   },
 }
 
@@ -85,11 +86,42 @@ dap.listeners.after.event_initialized['dapui_config'] = dapui.open
 dap.listeners.before.event_terminated['dapui_config'] = dapui.close
 dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
--- Install golang specific config
-require('dap-go').setup {
-  delve = {
-    -- On Windows delve must be run attached or it crashes.
-    -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-    detached = vim.fn.has 'win32' == 0,
+-- Install C/C++/Zig debugging via codelldb
+local mason_registry = require 'mason-registry'
+local codelldb = mason_registry.get_package 'codelldb'
+local extension_path = codelldb:get_install_path() .. '/extension/'
+local codelldb_path = extension_path .. 'adapter/codelldb'
+
+dap.adapters.codelldb = {
+  type = 'server',
+  port = '${port}',
+  executable = {
+    command = codelldb_path,
+    args = { '--port', '${port}' },
   },
 }
+
+local cpp_config = {
+  {
+    name = 'Launch file',
+    type = 'codelldb',
+    request = 'launch',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+    args = {},
+  },
+  {
+    name = 'Attach to process',
+    type = 'codelldb',
+    request = 'attach',
+    pid = require('dap.utils').pick_process,
+    cwd = '${workspaceFolder}',
+  },
+}
+
+dap.configurations.cpp = cpp_config
+dap.configurations.c = cpp_config
+dap.configurations.zig = cpp_config
